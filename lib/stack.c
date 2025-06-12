@@ -5,51 +5,51 @@
 
 // estructura auxiliar para implementar la pila 
 // nodo de listas dinámica simplmente enlazada
-typedef struct _node {
+typedef struct _snode {
   STACK_ELEM data;
-  struct _node *next;
-} node;
+  struct _snode *next;
+} snode;
 
 // crear un nodo de lista
-node* node_new(STACK_ELEM elem) {
-  node* new_node = (node*) malloc(sizeof(node));
+snode* snode_new(STACK_ELEM elem) {
+  snode* new_snode = (snode*) malloc(sizeof(snode));
 
-  new_node->data = elem;
-  new_node->next = NULL;
+  new_snode->data = elem;
+  new_snode->next = NULL;
 
-  return new_node;
+  return new_snode;
 }
 
 // liberar un nodo de lista
-node* node_free(node* n) {
-  node* r = n->next;
+snode* snode_free(snode* n) {
+  snode* r = n->next;
   free(n);
   return r;
 }
 
 // agregar un nodo al frente de la lista
-void node_insert(node** list, node* n){
+void snode_insert(snode** list, snode* n){
     n->next = *list;
     *list = n;    
 }
 
 // quitar el nodo al frente de la lista
-node* node_remove(node** list){
-    node* r = *list;
+snode* snode_remove(snode** list){
+    snode* r = *list;
     *list = r->next;
     r->next = NULL;
     return r;
 }
 
 // obtener el valor del nodo
-STACK_ELEM node_get(node* node){
-    return node->data;
+STACK_ELEM snode_get(snode* snode){
+    return snode->data;
 }
 
 /* IMPLEMENTACIÓN DINÁMICA DE STACK */
 // estructura de la pila
 typedef struct _stack {
-  node *top;
+  snode *top;
   int maxsize;
   int count;
 } stack;
@@ -92,7 +92,7 @@ void push(stack* s, STACK_ELEM elem) {
     exit(1);
   }
   
-  node_insert(&s->top, node_new(elem));
+  snode_insert(&s->top, snode_new(elem));
   s->count++;
 }
 
@@ -103,10 +103,10 @@ STACK_ELEM pop(stack* s) {
     exit(1);
   }
 
-  node *aux = node_remove(&s->top);
-  STACK_ELEM elem = node_get(aux);
+  snode *aux = snode_remove(&s->top);
+  STACK_ELEM elem = snode_get(aux);
   s->count--;
-  node_free(aux);
+  snode_free(aux);
   return elem;
 }
 
@@ -117,7 +117,7 @@ STACK_ELEM top(stack* s) {
     exit(1);
   }
 
-  return node_get(s->top);
+  return snode_get(s->top);
 }
 
 // obtener la cantidad de elementos en la pila
